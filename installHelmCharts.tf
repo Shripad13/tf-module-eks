@@ -16,6 +16,14 @@ kubectl create ns argocd && true
 
 sleep 3
 kubectl apply -f https://raw.githubusercontent.com/B58-CloudDevOps/learn-kuberentes/refs/heads/main/argoCD/argo.yaml -n argocd
+
+echo "Installing Nginx Ingress Controller"
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo list
+ls -lrth
+echo "${path.module}/ingress.yaml"       # ${path.module} gives the path of the current/local module
+helm upgrade -i ngx-ingress ingress-nginx/ingress-nginx -f ${path.module}/ingress.yaml
+
 EOF
   }
 }

@@ -48,3 +48,9 @@ RDS - Relational Database Service
  5. In cluster mode, Cost also increases as per DB.
  6. In Instance mode there will be main DB & replica DB, so continuously Main DB will be writing if in case of failover replica DB will take the workload.
  7. In instance mode, main DB & replica DB will be in different zones.
+
+
+
+## Ingress Controller with NLB & SSL termination
+One EKS cluster can have multiple Ingress controllers.
+Each & Every Ingress controller will have Ingress resources.
