@@ -1,3 +1,4 @@
+# IAM Role for EKS
 data "aws_iam_policy_document" "assume_role" {
   statement {
     effect = "Allow"
@@ -12,7 +13,23 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
+resource "aws_iam_role" "cluster" {
+  name               = "${var.env}-eks-cluster-role"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  tags               = local.eks_tags
+}
 
+resource "aws_iam_role_policy_attachment" "cluster-AmazonEKSClusterPolicy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.cluster.name
+}
+
+# Optionally, enable Security Groups for Pods
+# Reference: https://docs.aws.amazon.com/eks/latest/userguide/security-groups-for-pods.html
+resource "aws_iam_role_policy_attachment" "cluster-AmazonEKSVPCResourceController" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"
+  role       = aws_iam_role.cluster.name
+}
 
 # IAM Role for EKS Node Group
 
